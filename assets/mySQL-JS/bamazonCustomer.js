@@ -52,12 +52,16 @@ function selectItem() {
 				}
 				if (chosenItem.stock_quantity > parseInt(answer.amount)) {
 					var revisedStock = chosenItem.stock_quantity - answer.amount;
-					var total = answer.amount * chosenItem.price;
+					var total = parseFloat(answer.amount * chosenItem.price);
+					var sales = chosenItem.product_sales + total;
 					connection.query(
-						"UPDATE products SET ? WHERE ?",
+						"UPDATE products SET ?, ? WHERE ?",
 						[
 							{
-								stock_quantity: revisedStock
+								stock_quantity: revisedStock,
+							},
+							{
+								product_sales: sales,
 							},
 							{
 								item_id: chosenItem.item_id
@@ -73,8 +77,33 @@ function selectItem() {
 				else {
 					console.log("Insufficient quantity!");
 				}
-				connection.end();
+				runOptions();
 			}
 			)
 	});
+}
+
+function runOptions() {
+	inquirer
+		.prompt([
+			{
+				name: "options",
+				type: "rawlist",
+				message: "What would you like to do next?",
+				choices: ["Place Another Order", "Exit"]
+			},
+		]).then(function (answer) {
+			switch (answer.options) {
+				case "Place Another Order":
+					selectItem();
+					break;
+				case "Exit":
+					exit();
+					break;
+			}
+		})
+}
+
+function exit() {
+	connection.end();
 }

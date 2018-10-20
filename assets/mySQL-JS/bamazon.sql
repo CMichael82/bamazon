@@ -10,7 +10,15 @@ CREATE TABLE products(
 	department_name VARCHAR(20),
 	price DECIMAL(10,2),
 	stock_quantity INTEGER(10),
+	product_sales DECIMAL(10,2),
   PRIMARY KEY (item_id)
+);
+
+CREATE TABLE departments (
+	department_id INTEGER(11) AUTO_INCREMENT NOT NULL,
+	department_name VARCHAR(20),
+	over_head_costs INTEGER(10),
+  PRIMARY KEY (department_id)
 );
 
 -- Creates new rows
@@ -34,3 +42,17 @@ INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("Sterling Ring", "Jewelry", 79.99, 55);
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("Pants", "Men's Apparel", 29.74, 88);
+
+INSERT INTO departments (department_name, over_head_costs)
+VALUES ("Jewelry", 5000);
+INSERT INTO departments (department_name, over_head_costs)
+VALUES ("Home Decor", 7500);
+INSERT INTO departments (department_name, over_head_costs)
+VALUES ("Women's Apparel", 6000);
+INSERT INTO departments (department_name, over_head_costs)
+VALUES ("Men's Apparel", 4000);
+INSERT INTO departments (department_name, over_head_costs)
+VALUES ("Electronics", 8000);
+
+SELECT * FROM products;
+SELECT * FROM departments;
