@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+var table = require("console.table");
 
 var connection = mysql.createConnection({
 	host: "localhost",
@@ -56,10 +57,20 @@ function runSearch() {
 function forSale() {
 	connection.query("SELECT * FROM products", function (err, res) {
 		if (err) throw err;
+		var list = [];
 		for (var i = 0; i < res.length; i++) {
-			console.log("Item ID: " + res[i].item_id + " | Product: " + res[i].product_name + " | Price: $" + res[i].price + " | Quantity: " + res[i].stock_quantity);
+			// console.log("Item ID: " + res[i].item_id + " | Product: " + res[i].product_name + " | Price: $" + res[i].price + " | Quantity: " + res[i].stock_quantity);
+			var item = [
+				res[i].item_id,
+				res[i].product_name,
+				res[i].price,
+				res[i].stock_quantity
+			];
+			list.push(item)
 		}
-		console.log("\n-----------------------")
+		console.log("\n-----------------------");
+		console.table(["Item ID", "Products", "Price", "Quantity"], list);
+		console.log("-----------------------------------");
 		runSearch();
 	})
 }
@@ -67,10 +78,20 @@ function forSale() {
 function lowInventory() {
 	connection.query("SELECT *FROM products WHERE stock_quantity < 5", function (err, res) {
 		if (err) throw err;
+		var lowList = [];
 		for (var i = 0; i < res.length; i++) {
-			console.log("Item ID: " + res[i].item_id + " | Product: " + res[i].product_name + " | Price: $" + res[i].price + " | Quantity: " + res[i].stock_quantity + "\n");
+			// console.log("Item ID: " + res[i].item_id + " | Product: " + res[i].product_name + " | Price: $" + res[i].price + " | Quantity: " + res[i].stock_quantity + "\n");
+			var lowItem = [
+				res[i].item_id,
+				res[i].product_name,
+				res[i].price,
+				res[i].stock_quantity
+			];
+			lowList.push(lowItem)
 		}
-		console.log("\n-----------------------")
+		console.log("\n-----------------------");
+		console.table(["Item ID", "Products", "Price", "Quantity"], lowList);
+		console.log("-----------------------------------");
 		runSearch();
 	})
 }

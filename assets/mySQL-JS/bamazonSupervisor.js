@@ -59,8 +59,9 @@ function viewSales() {
 				];
 				summary.push(item)
 			}
-			console.log("\n-------------------\n")
+			console.log("\n-------------------\n");
 			console.table(["department_id", "department_name", "over_head_costs", "product_sales", "total_profit"], summary);
+			console.log("\n-------------------\n");
 			runOptions();
 		})
 }
@@ -80,7 +81,8 @@ function createDept() {
 		},
 
 	]).then(function (newDept) {
-		console.log(newDept);
+		console.log("\n-------------------\n");
+		console.log("Department Added: " + newDept.dept + "\nOverhead: $" + newDept.overhead);
 		connection.query(
 			"INSERT INTO departments SET ?",
 			{

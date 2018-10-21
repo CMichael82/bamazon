@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+var table = require("console.table");
 
 var connection = mysql.createConnection({
 	host: "localhost",
@@ -18,9 +19,17 @@ connection.connect(function (err) {
 function afterConnection() {
 	connection.query("SELECT * FROM products", function (err, res) {
 		if (err) throw err;
+		var list = []
 		for (var i = 0; i < res.length; i++) {
-			console.log("Item ID: " + res[i].item_id + " | Product: " + res[i].product_name + " | Price: $" + res[i].price);
+			var item = [
+				res[i].item_id,
+				res[i].product_name,
+				res[i].price,
+			];
+			list.push(item)
 		}
+		console.log("\n-------------------\n");
+		console.table(["Item ID", "Products", "Price"], list);
 		console.log("-----------------------------------");
 		selectItem();
 	});
@@ -71,11 +80,15 @@ function selectItem() {
 							if (error) throw err;
 						}
 					);
+					console.log("\n-----------------------\n");
 					console.log("Your Order for " + answer.amount + " " + chosenItem.product_name + " has been processed! Your total is: $" + total);
+					console.log("\n-------------------\n");
 					// console.log("Inventory has been adjusted. The new stock quantity is: " + revisedStock);
 				}
 				else {
+					console.log("\n-----------------------\n");
 					console.log("Insufficient quantity!");
+					console.log("\n-------------------\n");
 				}
 				runOptions();
 			}
